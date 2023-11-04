@@ -1,4 +1,16 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { GlobalContext, useGlobalReducer } from "../context/globalContext";
+import Home from "./Home";
+import Transaction from "./Transaction";
+import Wallet from "./Wallet";
+import Block from "./Block";
+
+export const allPages = {
+  home: "home",
+  transaction: "transaction",
+  wallet: "wallet",
+  block: "block",
+};
 
 export default function Search() {
   return (
@@ -14,6 +26,22 @@ export default function Search() {
 }
 
 function SearchInput() {
+  const globalState = useGlobalReducer();
+  const steps = useMemo(() => {
+    switch (globalState.state.steps) {
+      case allPages.home:
+        return <Home />;
+      case allPages.transaction:
+        return <Transaction />;
+      case allPages.wallet:
+        return <Wallet />;
+      case allPages.block:
+        return <Block />;
+      default:
+        return <Home />;
+    }
+  }, [globalState.state.steps]);
+
   return (
     <div>
       <form>
